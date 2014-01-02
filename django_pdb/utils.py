@@ -7,6 +7,14 @@ def has_ipdb():
         return False
 
 
+def has_pudb():
+    try:
+        import pudb
+        return True
+    except ImportError:
+        return False
+
+
 def get_ipdb():
     def_colors = get_def_colors()
     try:
@@ -15,6 +23,21 @@ def get_ipdb():
         return ipdb.__main__.Pdb(def_colors)
     except ImportError:  # old versions of ipdb
         return ipdb.Pdb(def_colors)
+
+
+
+def get_pudb():
+    try:
+        from pudb import debugger
+        return debugger.Debugger()
+    except ImportError:  # old versions of ipdb
+        return  pdb.Pdb()
+
+
+def get_pudb_set_trace():
+    # for the templatetags because the file is named 'pdb' and that cause an importation conflict
+    from pudb import set_trace
+    return set_trace
 
 
 def get_pdb_set_trace():
